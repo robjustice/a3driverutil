@@ -9,7 +9,8 @@ http://6502.org/users/andre/o65/
 I've been trying to learn python more, so this seemed like a good excuse to delve into it a bit more. The resultant program has expanded quite a bit on the original idea, and its added a bit of scp functionality to it, eg list, add, delete, update and extract drivers from a SOS.DRIVER file.
 
 
-## Usage to convert and add/update to a SOS.DRIVER file:
+# Usage
+## Convert o65 binary and add/update to a SOS.DRIVER file
 
 The ca65 source file needs the comment in the 'TEXT' segment, and the code in the 'DATA' segment.
 An example skeleton source file is shown below:
@@ -79,7 +80,36 @@ I have used a windows batch file to automate this process to enable quick driver
    java -jar ac.jar -d %DISKIMAGE% SOS.DRIVER
    java -jar ac.jar -p %DISKIMAGE% SOS.DRIVER SOS $0000 < SOS.DRIVER#0c0000
    
-   @REM run the disk image in 
-   C:\Storage\_emu\Mess\mess.exe apple3 -rompath C:\Storage\_emu\Mess\roms -skip_gameinfo -resolution 640x480 -window -nothrottle -flop1 %DISKIMAGE%
+   @REM run the disk image in Mess
+   C:\Storage\_emu\Mess\mess.exe apple3 -rompath C:\Storage\_emu\Mess\roms -skip_gameinfo -resolution 640x480 -window -flop1 %DISKIMAGE%
    ```
 
+## List Drivers in a SOS.DRIVER file
+
+   ```
+   A3Driverutil.py list SOS.DRIVERtdm#0c0000
+   DriverName        Status     Slot   Unit   Manid  Release
+   .GRAFIX           active     N/A     00     0001   1300
+   .AUDIO            active     N/A     00     0001   1000
+   .FMTD1            active     N/A     00     0001   1300
+     .FMTD2          active     N/A     01     0001   1300
+     .FMTD3          inactive   N/A     02     0001   1300
+     .FMTD4          inactive   N/A     03     0001   1300
+   .RS232            active     N/A     00     0001   1300
+   .PARPRINTER       active       1     00     0001   1300
+   .SILENTYPE        active     N/A     00     0001   1040
+   .PROFILE          active       1     00     4453   1000
+     .CFFA3000D2     active       1     01     4453   1000
+     .CFFA3000D3     active       1     02     4453   1000
+     .CFFA3000D4     active       1     03     4453   1000
+     .CFFA3000D5     active       1     04     4453   1000
+     .CFFA3000D6     active       1     05     4453   1000
+     .CFFA3000D7     active       1     06     4453   1000
+     .CFFA3000D8     active       1     07     4453   1000
+   .CONSOLE          active       4     00     0001   1310
+     .MOUSE          active       4     01     5555   2310
+   .DESKTOPMANAGER   active     N/A     00     3333   1400
+   
+    Total size:  42496
+    ```
+## Extract driver code from SOS.DRIVER file
