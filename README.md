@@ -3,7 +3,7 @@ Python program to convert o65 relocatable binary files for use as Apple /// driv
 
 The normal procedure for assembling Apple /// drivers is to load the assembler source file into either an emulator or real Apple II or /// computer. And then use the Pascal assembler to assemble and create the required relocatable PCD object file that the Apple /// System Utilities SCP accepts. I bumped into the o65 relocatable binary format while looking around the internet and then noticed that the ca65 assembler includes support for this. I wondered if this could be used and converted for use in driver development. 
 
-The spec for the o65 file is available here, plu detail on the usages, etc.
+The spec for the o65 file is available here, plus detail on the usages, etc. :
 http://6502.org/users/andre/o65/
 
 I've been trying to learn python more, so this seemed like a good excuse to delve into it a bit more. The resultant program has expanded quite a bit on the original idea, and its added a bit of scp functionality to it, eg list, add, delete, update and extract drivers from a SOS.DRIVER file.
