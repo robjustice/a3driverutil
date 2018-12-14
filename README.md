@@ -1,12 +1,12 @@
 # A3Driverutil
 Python program to convert o65 relocatable binary files for use as Apple /// drivers, plus support for adding/updating and removing drivers from the sos.driver file.
 
-The normal procedure for assembling Apple /// drivers is to load the assembler source file into either an emulator or real Apple II or /// computer and use the Pascal assembler to assemble and create the required relocatable PCD object file that the Apple /// System Utilities SCP accepts. I bumped into the o65 relocatable binary format while looking around for the internet and then notices that the ca65 assembler includes support for this. I wondered if this could be used and converted for use in driver development. 
+The normal procedure for assembling Apple /// drivers is to load the assembler source file into either an emulator or real Apple II or /// computer. And then use the Pascal assembler to assemble and create the required relocatable PCD object file that the Apple /// System Utilities SCP accepts. I bumped into the o65 relocatable binary format while looking around the internet and then noticed that the ca65 assembler includes support for this. I wondered if this could be used and converted for use in driver development. 
 
-The spec for the o65 file is available here, its uses are also listed on this page.
+The spec for the o65 file is available here, plu detail on the usages, etc.
 http://6502.org/users/andre/o65/
 
-I've been trying to learn python more, so this seemed like a good excuse to delve into it a bit more. The resultant program has expanded on the original idea quite a bit, and its added a bit of scp functionality to it, eg list, add, delete, update and extract drivers from a SOS.DRIVER file.
+I've been trying to learn python more, so this seemed like a good excuse to delve into it a bit more. The resultant program has expanded quite a bit on the original idea, and its added a bit of scp functionality to it, eg list, add, delete, update and extract drivers from a SOS.DRIVER file.
 
 
 # Usage:
