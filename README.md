@@ -11,10 +11,10 @@ I've been trying to learn python more, so this seemed like a good excuse to delv
 
 # Usage:
 
-   ```
-   ca65 source file needs the comment in the 'TEXT' segment, and the code in the 'DATA' segment:
-   example skeleton below
+The ca65 source file needs the comment in the 'TEXT' segment, and the code in the 'DATA' segment.
+An example skeleton source file is shown below:
    
+   ```
            .setcpu "6502"
            .reloc
    ;
@@ -57,7 +57,7 @@ once we have the binary, then we can convert it and add to an existing SOS.DRIVE
 Then we can use the disk util of choice to add to a dsk image and run in an emulator or a real machine.
 
 
-I have used a windows cmd batch file to automate this process to enable quick driver testing, example of mine is included show here:
+I have used a windows batch file to automate this process to enable quick driver testing, example of mine is shown here:
 
    ```
    @REM Driver make/update
