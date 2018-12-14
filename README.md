@@ -51,7 +51,7 @@ Then we assemble and link this with ca65 and ld65 using the Apple3_o65.cfg file 
 once we have the binary, then we can convert it and add to an existing SOS.DRIVER file. Note 'add' will check to see if the drivername already exists, and then only add if it does not. Once a driver exists in a SOS.DRIVER file, then the 'update' command can be used. 
 
    ```
-   python -f A3Driverutil.py add test.o65 SOS.DRIVER
+   python A3Driverutil.py add test.o65 SOS.DRIVER
    ```
 
 Then we can use the disk util of choice to add to a dsk image and run in an emulator or a real machine.
@@ -73,7 +73,7 @@ I have used a windows batch file to automate this process to enable quick driver
    java -jar ac.jar -g %DISKIMAGE% SOS.DRIVER > SOS.DRIVER#0c0000
    
    @REM convert the o65 and update existing driver in the SOS.DRIVER file
-   C:\python27\python.exe o65convert0.5.py update %FILENAME%.o65 SOS.DRIVER#0c0000
+   C:\python27\python.exe A3Driverutil.py update %FILENAME%.o65 SOS.DRIVER#0c0000
    
    @REM delete and then add updated SOS.DRIVER file to the disk image
    java -jar ac.jar -d %DISKIMAGE% SOS.DRIVER
