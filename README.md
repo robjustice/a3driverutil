@@ -9,7 +9,7 @@ http://6502.org/users/andre/o65/
 I've been trying to learn python more, so this seemed like a good excuse to delve into it a bit more. The resultant program has expanded quite a bit on the original idea, and its added a bit of scp functionality to it, eg list, add, delete, update and extract drivers from a SOS.DRIVER file.
 
 
-# Usage:
+## Usage to convert and add/update to a SOS.DRIVER file:
 
 The ca65 source file needs the comment in the 'TEXT' segment, and the code in the 'DATA' segment.
 An example skeleton source file is shown below:
@@ -48,7 +48,7 @@ Then we assemble and link this with ca65 and ld65 using the Apple3_o65.cfg file 
    ld65.exe test.o -o test.o65 -C Apple3_o65.cfg
    ```
 
-once we have the binary, then we can convert it and add to an existing SOS.DRIVER file
+once we have the binary, then we can convert it and add to an existing SOS.DRIVER file. Note 'add' will check to see if the drivername already exists, and then only add if it does not. Once a driver exists in a SOS.DRIVER file, then the 'update' command can be used. 
 
    ```
    python -f A3Driverutil.py add test.o65 SOS.DRIVER
