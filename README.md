@@ -114,6 +114,7 @@ This will list the drivers contained in a SOS.DRIVER file.
     Total size:  42496
     ```
 
+
 ## Extract driver code from SOS.DRIVER file
 I added this to allow drivers to be extracted from a SOS.DRIVER file. There are two options available here.
 1. extract
