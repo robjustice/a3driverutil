@@ -85,7 +85,7 @@ I have used a windows batch file to automate this process to enable quick driver
    ```
 
 ## List Drivers in a SOS.DRIVER file
-This will list the drivers conatined in a SOS.DRIVER file.
+This will list the drivers contained in a SOS.DRIVER file.
 
    ```
    A3Driverutil.py list SOS.DRIVERtdm#0c0000
