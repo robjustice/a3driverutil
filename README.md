@@ -85,6 +85,7 @@ I have used a windows batch file to automate this process to enable quick driver
    ```
 
 ## List Drivers in a SOS.DRIVER file
+This will list the drivers conatined in a SOS.DRIVER file.
 
    ```
    A3Driverutil.py list SOS.DRIVERtdm#0c0000
@@ -112,4 +113,12 @@ I have used a windows batch file to automate this process to enable quick driver
    
     Total size:  42496
     ```
+
 ## Extract driver code from SOS.DRIVER file
+I added this to allow drivers to be extracted from a SOS.DRIVER file. There are two options available here.
+1. extract
+This extracts the complete driver block of data from the SOS.DRIVER file and outputs as one file. This includes the comment length, comment, code length, code, relocation length and relocation data. This is more for future use, maybe i need to add a way to add this back into another sos.driver.
+
+2. extractcode
+This one extracts just the code for a specified driver, and then relocates it to $2000 base address. This aids in disassembly of the driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
+
