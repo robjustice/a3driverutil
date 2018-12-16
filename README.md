@@ -12,7 +12,7 @@ I've been trying to learn python more, so this seemed like a good excuse to delv
 # Usage
 ## Convert o65 binary and add/update to a SOS.DRIVER file
 
-To support the conversion procoess and, the ca65 source file needs the comment in the 'TEXT' segment, and the code in the 'DATA' segment.
+To support the conversion procoess and the o65 format, the ca65 source file needs the comment part in the 'TEXT' segment, and the code part in the 'DATA' segment.
 An example skeleton source file is shown below:
 (see examples in the Drivers folder)
    
@@ -50,7 +50,7 @@ Then we assemble and link this with ca65 and ld65 using the Apple3_o65.cfg file 
    ld65.exe test.o -o test.o65 -C Apple3_o65.cfg
    ```
 
-once we have the binary, then we can convert it and add to an existing SOS.DRIVER file. Note 'add' will check to see if the drivername already exists, and then only add if it does not. Once a driver exists in a SOS.DRIVER file, then the 'update' command can be used. 
+Once we have the binary, then we can convert it and add/update to an existing SOS.DRIVER file. Note 'add' will check to see if the drivername already exists, and then only add if it does not. Once a driver exists in a SOS.DRIVER file, then the 'update' command can be used. Update will only update if the driver exists. The program uses the driver name from the converted o65 file, so there is no need to specify it on the command line.
 
    ```
    python A3Driverutil.py add test.o65 SOS.DRIVER
@@ -59,7 +59,8 @@ once we have the binary, then we can convert it and add to an existing SOS.DRIVE
 Then we can use the disk util of choice to add to a dsk image and run in an emulator or a real machine.
 
 
-I have used a windows batch file to automate this process to enable quick driver testing, example of mine is shown here:
+I have used a windows batch file to automate this process to enable quick driver testing, an example of mine is shown here:
+(i'm a windows user, so you can adapt as required)
 
    ```
    @REM Driver make/update
@@ -114,6 +115,7 @@ This will list the drivers contained in a SOS.DRIVER file.
    
     Total size:  42496
 ```
+The list also displays the total size of the SOS.DRIVER file. This program does not do any specific size checking currently, so you will need to keep an eye on this. I think I have read that SOS will work with up to around 60k, but i think the System Utils will not allow you to create one this big.  
 
 ## Extract driver code from SOS.DRIVER file
 I added this to allow a driver to be extracted from a SOS.DRIVER file. There are two options available here.
@@ -123,3 +125,5 @@ This extracts the complete driver block of data from the SOS.DRIVER file and out
 ### 2. extractcode
 This one extracts just the code for a specified driver, and then relocates it to $2000 base address. This is for use when disassembling a driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
 
+## Delete driver code from the SOS.DRIVER file
+This allows a driver to be deleted from a SOS.DRIVER file.
