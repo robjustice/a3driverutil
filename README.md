@@ -12,8 +12,9 @@ I've been trying to learn python more, so this seemed like a good excuse to delv
 # Usage
 ## Convert o65 binary and add/update to a SOS.DRIVER file
 
-The ca65 source file needs the comment in the 'TEXT' segment, and the code in the 'DATA' segment.
+To support the conversion procoess and, the ca65 source file needs the comment in the 'TEXT' segment, and the code in the 'DATA' segment.
 An example skeleton source file is shown below:
+(see examples in the Drivers folder)
    
    ```
            .setcpu "6502"
@@ -112,14 +113,13 @@ This will list the drivers contained in a SOS.DRIVER file.
    .DESKTOPMANAGER   active     N/A     00     3333   1400
    
     Total size:  42496
-    ```
-
+```
 
 ## Extract driver code from SOS.DRIVER file
-I added this to allow drivers to be extracted from a SOS.DRIVER file. There are two options available here.
-1. extract
+I added this to allow a driver to be extracted from a SOS.DRIVER file. There are two options available here.
+### 1. extract
 This extracts the complete driver block of data from the SOS.DRIVER file and outputs as one file. This includes the comment length, comment, code length, code, relocation length and relocation data. This is more for future use, maybe i need to add a way to add this back into another sos.driver.
 
-2. extractcode
-This one extracts just the code for a specified driver, and then relocates it to $2000 base address. This aids in disassembly of the driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
+### 2. extractcode
+This one extracts just the code for a specified driver, and then relocates it to $2000 base address. This is for use when disassembling a driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
 
