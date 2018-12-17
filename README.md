@@ -85,11 +85,54 @@ I have used a windows batch file to automate this process to enable quick driver
    @REM run the disk image in Mess
    C:\Storage\_emu\Mess\mess.exe apple3 -rompath C:\Storage\_emu\Mess\roms -skip_gameinfo -resolution 640x480 -window -flop1 %DISKIMAGE%
    ```
+Command line syntax for these:
+
+   ```
+   usage: A3Driverutil.py add [-h] o65file sosfile
+
+   positional arguments:
+     o65file     Input o65 code file to be converted
+     sosfile     SOS.DRIVER file to list the contained drivers
+     
+   usage: A3Driverutil.py update [-h] o65file sosfile
+
+   positional arguments:
+     o65file     Input o65 code file to be converted
+     sosfile     SOS.DRIVER file to be updated
+```
+
+## Convert o65 binary and output as binary file
+This converts the o65 binary and outputs as a binary file with comment lenght, comment, code length, code, reloc length and reloc table. This is the same output format as the extract command.
+
+   ```
+   usage: A3Driverutil.py bin [-h] o65file binfile
+
+   positional arguments:
+     o65file     Input o65 code file to be converted
+     binfile     Binary output file
+   ```
+
+## Convert o65 binary and output as SOS.DRIVER file
+This converts the o65 binary and outputs as a SOS.DRIVER that contains just one driver. The program adds a full SOS.DRVIER file header structure, ie 'SOS DRVR' and dummy char set and keyboard map. This allows this to be loaded as a secondary driver file with SCP. 
+
+   ```
+   usage: A3Driverutil.py sos [-h] o65file sosfile
+
+   positional arguments:
+     o65file     Input o65 code file to be converted
+     sosfile     SOS.DRIVER Binary output file
+```
 
 ## List Drivers in a SOS.DRIVER file
 This will list the drivers contained in a SOS.DRIVER file.
 
    ```
+   usage: A3Driverutil.py list [-h] sosfile
+
+   positional arguments:
+     sosfile     SOS.DRIVER file to list drivers in
+  
+  Example:
    A3Driverutil.py list SOS.DRIVERtdm#0c0000
    DriverName        Status     Slot   Unit   Manid  Release
    .GRAFIX           active     N/A     00     0001   1300
@@ -122,8 +165,32 @@ I added this to allow a driver to be extracted from a SOS.DRIVER file. There are
 ### 1. extract
 This extracts the complete driver block of data from the SOS.DRIVER file and outputs as one file. This includes the comment length, comment, code length, code, relocation length and relocation data. This is more for future use, maybe i need to add a way to add this back into another sos.driver.
 
+   ```
+   usage: A3Driverutil.py extract [-h] drivername sosfile
+
+   positional arguments:
+     drivername  Name of driver to be extracted (include . eg: ".console"
+     sosfile     SOS.DRIVER file to extract the driver from
+```
+
 ### 2. extractcode
 This one extracts just the code for a specified driver, and then relocates it to $2000 base address. This is for use when disassembling a driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
 
+   ```
+   usage: A3Driverutil.py extractcode [-h] drivername sosfile
+
+   positional arguments:
+     drivername  Name of driver to be extracted (include . eg: ".console"
+     sosfile     SOS.DRIVER file to extract the driver from
+```
+
 ## Delete driver code from the SOS.DRIVER file
 This allows a driver to be deleted from a SOS.DRIVER file.
+
+   ```
+   usage: A3Driverutil.py delete [-h] drivername sosfile
+
+   positional arguments:
+     drivername  Name of driver to be deleted (include . eg: ".console"
+     sosfile     SOS.DRIVER file to delete the driver from
+  ```
