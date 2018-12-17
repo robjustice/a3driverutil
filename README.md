@@ -44,7 +44,7 @@ An example skeleton source file is shown below:
            .endproc
    ```
 
-Then we assemble and link this with ca65 and ld65 using the Apple3_o65.cfg file (see src folder)
+Then we assemble and link this with ca65 and ld65 using the Apple3_o65.cfg file (see files)
    ```
    ca65.exe test.s -l test.lst
    ld65.exe test.o -o test.o65 -C Apple3_o65.cfg
