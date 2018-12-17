@@ -101,8 +101,8 @@ Command line syntax for these:
      sosfile     SOS.DRIVER file to be updated
 ```
 
-## Convert o65 binary and output as binary file
-This converts the o65 binary and outputs as a binary file with comment lenght, comment, code length, code, reloc length and reloc table. This is the same output format as the extract command.
+## Convert o65 binary and output as driver binary file
+This converts the o65 binary and outputs as a binary file with comment length, comment, code length, code, reloc length and reloc table. This is the same output format as the extract command.
 
    ```
    usage: A3Driverutil.py bin [-h] o65file binfile
@@ -113,7 +113,7 @@ This converts the o65 binary and outputs as a binary file with comment lenght, c
    ```
 
 ## Convert o65 binary and output as SOS.DRIVER file
-This converts the o65 binary and outputs as a SOS.DRIVER that contains just one driver. The program adds a full SOS.DRVIER file header structure, ie 'SOS DRVR' and dummy char set and keyboard map. This allows this to be loaded as a secondary driver file with SCP. 
+This converts the o65 binary and outputs as a SOS.DRIVER that contains just one driver. The program adds a full SOS.DRIVER file header structure, ie 'SOS DRVR' and dummy char set and keyboard map. This allows the file to be loaded as a secondary driver file with SCP. ie read in a full SOS.DRIVER file with SCP, and then read this one in as a secondary one to add to the other drivers. 
 
    ```
    usage: A3Driverutil.py sos [-h] o65file sosfile
