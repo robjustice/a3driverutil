@@ -12,7 +12,7 @@ I've been trying to learn python more, so this seemed like a good excuse to delv
 # Usage
 ## Convert o65 binary and add/update to a SOS.DRIVER file
 
-To support the conversion procoess and the o65 format, the ca65 source file needs the comment part in the 'TEXT' segment, and the code part in the 'DATA' segment.
+To support the conversion process and the o65 format, the ca65 source file needs the comment part in the 'TEXT' segment, and the code part in the 'DATA' segment.
 An example skeleton source file is shown below:
 (see examples in the Drivers folder)
    
