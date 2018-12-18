@@ -85,7 +85,7 @@ I have used a windows batch file to automate this process to enable quick driver
    @REM run the disk image in Mess
    C:\Storage\_emu\Mess\mess.exe apple3 -rompath C:\Storage\_emu\Mess\roms -skip_gameinfo -resolution 640x480 -window -flop1 %DISKIMAGE%
    ```
-Command line syntax for these:
+Command line syntax for these Options:
 
    ```
    usage: A3Driverutil.py add [-h] o65file sosfile
