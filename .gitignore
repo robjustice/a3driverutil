@@ -1,0 +1,7 @@
+# Intermediate files
+*.o
+*.lst
+*.o65
+
+# Eclipse stuff
+/.project
