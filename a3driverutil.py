@@ -174,7 +174,14 @@ def convert_o65(file):
         #print ("tlen: ",tlen)
         #print ("dbase: ",dbase)
         #print ("dlen: ",dlen)
-        
+
+        if tlen == 0:
+            print("No text segment found; ensure your driver defines .segment \"TEXT\"")
+            exit(1)
+        if dlen == 0:
+            print("No data segment found; ensure your driver defines .segment \"DATA\"")
+            exit(1)
+
         #skip over header options
         olen = readUnpack(o65file,1,type = '1') 
         while olen != 0 :  #0 marks end of options header
