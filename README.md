@@ -92,13 +92,13 @@ Command line syntax for these Options:
 
    positional arguments:
      o65file     Input o65 code file to be converted
-     sosfile     SOS.DRIVER file to list the contained drivers
+     sosfile     SOS.DRIVER file to add driver to (driver must not already exist)
      
    usage: A3Driverutil.py update [-h] o65file sosfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
-     sosfile     SOS.DRIVER file to be updated
+     sosfile     SOS.DRIVER file to be updated (an existing driver will be updated)
 ```
 
 ## Convert o65 binary and output as driver binary file
