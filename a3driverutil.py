@@ -228,6 +228,10 @@ def convert_o65(file):
                     offset_address = offset_address + offset
                     reloctable.append(offset_address)
                     offset = readUnpack(o65file,1,type = '1')
+                else:
+                    print 'Error, only 16 bit word offsets allowed, ie no lda #<address or lda #>address'
+                    o65file.close()
+                    exit()
         
         #add the length of the relocation table
         driver += pack('<H',len(reloctable)*2)    #this is the length of the relocate part in bytes
