@@ -625,7 +625,7 @@ elif args.command == 'extractcode':
           byte = readByte(extracted_driver_code,i)
           if i == offset_table[j]+1:   #looking at high byte
               #extracted_driver_code = extracted_driver_code[:i] + chr(byte + 0x20) + extracted_driver_code[i+1:]   #add to the existing address high byte
-              extracted_driver_code = extracted_driver_code[:i] + ( b'\x20') + extracted_driver_code[i+1:]   #add to the existing address high byte
+              extracted_driver_code = extracted_driver_code[:i] + (byte + 0x20).to_bytes(1,'little') + extracted_driver_code[i+1:]   #add to the existing address high byte
               if j < (len(offset_table)-1):    
                  j += 1        
 
