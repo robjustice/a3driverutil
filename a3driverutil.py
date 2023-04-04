@@ -555,7 +555,6 @@ elif args.command == 'extract':
       offset = drivers_list[i]['code_start']
       driver_details.append(parseDIB(sosdriverfile,offset,0))  #we always use dib0
 
-   print(driver_details)
    i = find(driver_details,'name',driver_name.upper()) #find index of the driver to extract, convert name to uppercase
    
    if i != -1:
