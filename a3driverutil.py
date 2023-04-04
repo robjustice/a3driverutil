@@ -439,10 +439,10 @@ elif args.command == 'list':
         
         if driver_details[i]['dib_num'] == 0:  #don't indent the first DIB
             #print('{:16}  {:10} {:3}     {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'], status, slot, driver_details[i]['unit'],driver_details[i]['manid'],driver_details[i]['release']))
-            print('{}  {} {}    {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'].decode('ascii').ljust(16,' '), status.ljust(10,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'],driver_details[i]['release']))
+            print('{}  {} {}    {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'].ljust(16,' '), status.ljust(10,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'],driver_details[i]['release']))
         else:         #otherwise indent the rest, ie sub devices
             #print('  {:16}{:10} {:3}     {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'], status, slot, driver_details[i]['unit'],driver_details[i]['manid'],driver_details[i]['release']))
-            print('  {}{} {}    {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'].decode('ascii').ljust(16,' '), status.ljust(10,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'],driver_details[i]['release']))
+            print('  {}{} {}    {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'].ljust(16,' '), status.ljust(10,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'],driver_details[i]['release']))
 
     print('\n Total size: ',len(filedata))
 
@@ -625,11 +625,8 @@ elif args.command == 'extractcode':
       for i in range(0,len(extracted_driver_code)):
           byte = readByte(extracted_driver_code,i)
           if i == offset_table[j]+1:   #looking at high byte
-              #print('something: {}'.format(extracted_driver_code[:i]))
-              #print('extracted_driver_code: {}'.format(extracted_driver_code))
-              #extracted_driver_code[i+1] = extracted_driver_code[i+1] + 0x20
-              #extracted_driver_code = extracted_driver_code + (byte + 0x20) + extracted_driver_code[i+1]   #add to the existing address high byte
-              extracted_driver_code = extracted_driver_code[:i] + byte.to_bytes(1,"little") + ( b'\x20') + extracted_driver_code[i+1:]   #add to the existing address high byte
+              #extracted_driver_code = extracted_driver_code[:i] + chr(byte + 0x20) + extracted_driver_code[i+1:]   #add to the existing address high byte
+              extracted_driver_code = extracted_driver_code[:i] + ( b'\x20') + extracted_driver_code[i+1:]   #add to the existing address high byte
               if j < (len(offset_table)-1):    
                  j += 1        
 
