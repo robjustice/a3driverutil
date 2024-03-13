@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 
 # use unpack from struct and argv from sys
@@ -119,8 +119,7 @@ args = parser.parse_args()
 def readUnpack(file,bytes, **options):
     if options.get("type") == 't':
         SOS = file.read(bytes)
-        text_unpacked = unpack('%ss' % bytes, SOS)
-        return ''.join(text_unpacked)
+        return SOS.decode('ascii')
 
     if options.get("type") == 'b':
         SOS = file.read(bytes)
@@ -189,7 +188,7 @@ def convert_o65(file):
            option_bytes = readUnpack(o65file,olen-2,type = 't')
            olen = readUnpack(o65file,1,type = '1') 
         
-        driver=''      #this will be the converted driver
+        driver=bytearray()      #this will be the converted driver
         
         #add text segment
         driver += o65file.read(tlen)  #this is the comment part
@@ -311,7 +310,7 @@ def getDriverName(driver):
     offset = readWord(driver, 0)          #comment length
     name_length = readByte(driver,offset + 8)  #extract the name length from the driver code
                                                #code starts after the comment
-    return driver[offset+9:offset+9+name_length]  #then grab the name
+    return driver[offset+9:offset+9+name_length].decode('ascii')  #then grab the name
 
 
 #
@@ -392,7 +391,7 @@ elif args.command == 'add':
     if i == -1:
         #not found, lets add
         trimmed_sosdriver = sosdriverfile[0:driver_end]  #trim of the 0xFFFF end marker
-        newsosdriverfile = trimmed_sosdriver + driver + chr(0xFF) + chr(0xFF)
+        newsosdriverfile = trimmed_sosdriver + driver + b'\xFF' + b'\xFF'
         
         sosdriver = open(sos_file,'wb')      #write it back out, overwriting the old one
         sosdriver.write(newsosdriverfile)      
