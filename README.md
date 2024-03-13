@@ -1,4 +1,4 @@
-# A3Driverutil
+# a3Driverutil
 Python program to convert o65 relocatable binary files for use as Apple /// drivers, plus support for adding/updating and removing drivers from the sos.driver file.
 
 The normal procedure for assembling Apple /// drivers is to load the assembler source file into either an emulator or real Apple II or /// computer. And then use the Pascal assembler to assemble and create the required relocatable PCD object file that the Apple /// System Utilities SCP accepts. I bumped into the o65 relocatable binary format while looking around the internet and then noticed that the ca65 assembler includes support for this. I wondered if this could be used and converted for use in driver development. 
@@ -53,7 +53,7 @@ Then we assemble and link this with ca65 and ld65 using the Apple3_o65.cfg file 
 Once we have the binary, then we can convert it and add/update to an existing SOS.DRIVER file. Note 'add' will check to see if the drivername already exists, and then only add if it does not. Once a driver exists in a SOS.DRIVER file, then the 'update' command can be used. Update will only update if the driver exists. The program uses the driver name from the converted o65 file, so there is no need to specify it on the command line.
 
    ```
-   python A3Driverutil.py add test.o65 SOS.DRIVER
+   python a3Driverutil.py add test.o65 SOS.DRIVER
    ```
 
 Then we can use the disk util of choice to add to a dsk image and run in an emulator or a real machine.
@@ -88,13 +88,13 @@ I have used a windows batch file to automate this process to enable quick driver
 Command line syntax for these Options:
 
    ```
-   usage: A3Driverutil.py add [-h] o65file sosfile
+   usage: a3Driverutil.py add [-h] o65file sosfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
      sosfile     SOS.DRIVER file to add driver to (driver must not already exist)
      
-   usage: A3Driverutil.py update [-h] o65file sosfile
+   usage: a3Driverutil.py update [-h] o65file sosfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
@@ -105,7 +105,7 @@ Command line syntax for these Options:
 This converts the o65 binary and outputs as a binary file with comment length, comment, code length, code, reloc length and reloc table. This is the same output format as the extract command.
 
    ```
-   usage: A3Driverutil.py bin [-h] o65file binfile
+   usage: a3Driverutil.py bin [-h] o65file binfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
@@ -116,7 +116,7 @@ This converts the o65 binary and outputs as a binary file with comment length, c
 This converts the o65 binary and outputs as a SOS.DRIVER that contains just one driver. The program adds a full SOS.DRIVER file header structure, ie 'SOS DRVR' and dummy char set and keyboard map. This allows the file to be loaded as a secondary driver file with SCP. ie read in a full SOS.DRIVER file with SCP, and then read this one in as a secondary one to add to the other drivers. 
 
    ```
-   usage: A3Driverutil.py sos [-h] o65file sosfile
+   usage: a3Driverutil.py sos [-h] o65file sosfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
@@ -127,7 +127,7 @@ This converts the o65 binary and outputs as a SOS.DRIVER that contains just one 
 This will list the drivers contained in a SOS.DRIVER file.
 
    ```
-   usage: A3Driverutil.py list [-h] sosfile
+   usage: a3Driverutil.py list [-h] sosfile
 
    positional arguments:
      sosfile     SOS.DRIVER file to list drivers in
@@ -160,24 +160,34 @@ This will list the drivers contained in a SOS.DRIVER file.
 ```
 The list also displays the total size of the SOS.DRIVER file. This program does not do any specific size checking currently, so you will need to keep an eye on this. I think I have read that SOS will work with up to around 60k, but i think the System Utils will not allow you to create one this big.  
 
-## Extract driver code from SOS.DRIVER file
-I added this to allow a driver to be extracted from a SOS.DRIVER file. There are two options available here.
-### 1. extract
-This extracts the complete driver block of data from the SOS.DRIVER file and outputs as one file. This includes the comment length, comment, code length, code, relocation length and relocation data. This is more for future use, maybe i need to add a way to add this back into another sos.driver.
+## Add driver to SOS.DRIVER file
+This adds the complete driver binary block of data to the SOS.DRIVER file. This file includes the comment length, comment, code length, code, relocation length and relocation data. The driver can be extracted from another SOS.DRIVER file with the 'extract' command.
 
    ```
-   usage: A3Driverutil.py extract [-h] drivername sosfile
+   usage: a3Driverutil.py addbin [-h] driverbinfile sosfile
+
+   positional arguments:
+     driverbinfile  Name of driver binary file to be added
+     sosfile        SOS.DRIVER file to add the driver to
+```
+
+
+## Extract driver from SOS.DRIVER file
+This extracts the complete driver block of data from the SOS.DRIVER file and outputs as one binary file. This includes the comment length, comment, code length, code, relocation length and relocation data. This can be added to another SOS.DRIVER file with the 'addbin' command.
+
+   ```
+   usage: a3Driverutil.py extract [-h] drivername sosfile
 
    positional arguments:
      drivername  Name of driver to be extracted (include . eg: ".console"
      sosfile     SOS.DRIVER file to extract the driver from
 ```
 
-### 2. extractcode
-This one extracts just the code for a specified driver, and then relocates it to $2000 base address. This is for use when disassembling a driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
+## Extract driver code from SOS.DRIVER file
+This extracts just the code for a specified driver from the SOS.DRIVER file, and then relocates it to $2000 base address. This is for use when disassembling a driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
 
    ```
-   usage: A3Driverutil.py extractcode [-h] drivername sosfile
+   usage: a3Driverutil.py extractcode [-h] drivername sosfile
 
    positional arguments:
      drivername  Name of driver to be extracted (include . eg: ".console"
@@ -188,7 +198,7 @@ This one extracts just the code for a specified driver, and then relocates it to
 This allows a driver to be deleted from a SOS.DRIVER file.
 
    ```
-   usage: A3Driverutil.py delete [-h] drivername sosfile
+   usage: a3Driverutil.py delete [-h] drivername sosfile
 
    positional arguments:
      drivername  Name of driver to be deleted (include . eg: ".console"

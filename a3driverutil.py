@@ -69,6 +69,16 @@ add_parser.add_argument(
     'sosfile', action='store',
     help='SOS.DRIVER file to list the contained drivers')
 
+# Add binary command
+add_parser = subparsers.add_parser(
+    'addbin', help='Add a drivers full binary chunk as new driver to an existing SOS.DRIVER file')
+add_parser.add_argument(
+    'binfile', action='store',
+    help='Input binary driver file to be added')
+add_parser.add_argument(
+    'sosfile', action='store',
+    help='SOS.DRIVER file to add driver to')
+
 # Update command
 update_parser = subparsers.add_parser(
     'update', help='Convert o65 binary and update existing driver in a SOS.DRIVER file')
@@ -91,7 +101,7 @@ delete_parser.add_argument(
     
 # Extract command
 extract_parser = subparsers.add_parser(
-    'extract', help='Extract a driver from an existing SOS.DRIVER file')
+    'extract', help='Extract a drivers full binary chunk from an existing SOS.DRIVER file')
 extract_parser.add_argument(
     'drivername', action='store',
     help='Name of driver to be extracted (include . eg: ".console"')
@@ -403,6 +413,47 @@ elif args.command == 'add':
         #found, report error
         print('Driver: ' + driver_name + ' elready exists in ' + sos_file + ', not added')
 
+#Add binary driver to an existing SOS.DRIVER file
+elif args.command == 'addbin':  
+    driver_file = args.binfile           #read in the binary DRIVER file to be added
+    driverf = open(driver_file,'rb')
+    driver = driverf.read()     
+    driverf.close()
+    
+    driver_name = getDriverName(driver)  #extract the driver name from the driver bin file
+    print('Driver: ' + driver_name + ' found')
+
+    sos_file = args.sosfile              #read in the existing SOS.DRIVER file
+    sosdriver = open(sos_file,'rb')
+    sosdriverfile = sosdriver.read()     
+    sosdriver.close()
+    
+    drivers_list = parsedriverfile(sosdriverfile)[0] #we just want the first item in the returned list
+    driver_end = parsedriverfile(sosdriverfile)[1]   #this is the offset of the 0xFFFF end marker
+    
+    #lets check if it already exists in the SOS.DRIVER file
+    driver_details = []
+    
+    for i in range(0,len(drivers_list)):
+        offset = drivers_list[i]['code_start']
+        driver_details.append(parseDIB(sosdriverfile,offset,0))  #we always use dib0
+    
+    i = find(driver_details,'name',driver_name.upper()) #find index of the driver to add, convert name to uppercase
+    
+    if i == -1:
+        #not found, lets add
+        trimmed_sosdriver = sosdriverfile[0:driver_end]  #trim of the 0xFFFF end marker
+        newsosdriverfile = trimmed_sosdriver + driver + b'\xFF' + b'\xFF'
+        
+        sosdriver = open(sos_file,'wb')      #write it back out, overwriting the old one
+        sosdriver.write(newsosdriverfile)      
+        sosdriver.close()   
+        
+        print('Driver: ' + driver_name + ' added to ' + sos_file)
+    
+    else:
+        #found, report error
+        print('Driver: ' + driver_name + ' elready exists in ' + sos_file + ', not added')
 
 #List drivers in a SOS.DRIVER file
 elif args.command == 'list':  
