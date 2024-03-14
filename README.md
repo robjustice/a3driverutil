@@ -204,3 +204,15 @@ This allows a driver to be deleted from a SOS.DRIVER file.
      drivername  Name of driver to be deleted (include . eg: ".console"
      sosfile     SOS.DRIVER file to delete the driver from
   ```
+
+## Set driver slot in a SOS.DRIVER file
+This allows the slot to be set for a driver in a SOS.DRIVER file.
+
+   ```
+   usage: a3Driverutil.py slot [-h] slotnumber drivername sosfile
+
+   positional arguments:
+     slotnumber  New slot number
+     drivername  Name of driver to be updated (include . eg: ".console"
+     sosfile     SOS.DRIVER file to update the driver slot
+  ```

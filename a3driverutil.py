@@ -119,6 +119,19 @@ extract_parser.add_argument(
     'sosfile', action='store',
     help='SOS.DRIVER file to extract the driver from')
 
+# Set Driver Slot command
+extract_parser = subparsers.add_parser(
+    'slot', help='Set slot for a driver')
+extract_parser.add_argument(
+    'newslot', action='store',
+    help='New slot number')
+extract_parser.add_argument(
+    'drivername', action='store',
+    help='Name of driver to set slot (include . eg: ".mouse"')
+extract_parser.add_argument(
+    'sosfile', action='store',
+    help='SOS.DRIVER file to extract the driver from')
+
 args = parser.parse_args()
 
 
@@ -688,4 +701,53 @@ elif args.command == 'extractcode':
 
    else:
       #not found
+      print('Driver: ' + driver_name + ' not found in SOS.DRIVER file')
+
+# Set Slot for a driver in a driver file
+#
+elif args.command == 'slot':  
+   newslot = int(args.newslot)
+
+   if (newslot < 0 or newslot > 4) and newslot != 255:
+       print('Invalid slot number, expect 0, 1-4, 255')
+       exit(1)
+
+   driver_name = args.drivername
+   
+   sos_file = args.sosfile              #read in the SOS.DRIVER file
+   sosdriver = open(sos_file,'rb')
+   sosdriverfile = bytearray(sosdriver.read())
+   sosdriver.close()
+   
+   drivers_list = parsedriverfile(sosdriverfile)[0]  #parse the driver file to find the positions of the drivers
+   drivers_end = parsedriverfile(sosdriverfile)[1]  #parse the driver file to find the end of the drivers
+
+   driver_details = []                    #now grab the details from dib0 of each them ie to find the names
+   for i in range(0,len(drivers_list)):
+      offset = drivers_list[i]['code_start']
+      driver_details.append(parseDIB(sosdriverfile,offset,0))  #we always use dib0
+
+   i = find(driver_details,'name',driver_name.upper()) #find index of the driver to set slot, convert name to uppercase
+   
+   if i != -1:
+      #found it
+      print('Driver found in SOS.DRIVER, updating slot')
+      
+      #start of the found driver
+      offset = drivers_list[i]['code_start']
+
+      sosdriverfile[offset+23] = newslot #update dib0
+
+      nextdib = readWord(sosdriverfile,offset+2) #next dib of this driver
+      while nextdib != 0:
+          sosdriverfile[offset+nextdib+23] = newslot #update next dib
+          nextdib = readWord(sosdriverfile,offset+nextdib+2) #get next dib of this driver
+
+      driverfile = open(sos_file,'wb')      #write the updated sos.driver file
+      driverfile.write(sosdriverfile)
+      driverfile.close()
+
+      print('Driver: ' + driver_name + ' slot updated to: ' + str(newslot))
+
+   else:
       print('Driver: ' + driver_name + ' not found in SOS.DRIVER file')
