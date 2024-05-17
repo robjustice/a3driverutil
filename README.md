@@ -88,13 +88,13 @@ I have used a windows batch file to automate this process to enable quick driver
 Command line syntax for these Options:
 
    ```
-   usage: a3Driverutil.py add [-h] o65file sosfile
+   usage: a3Driverutil.py add o65file sosfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
      sosfile     SOS.DRIVER file to add driver to (driver must not already exist)
      
-   usage: a3Driverutil.py update [-h] o65file sosfile
+   usage: a3Driverutil.py update o65file sosfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
@@ -105,7 +105,7 @@ Command line syntax for these Options:
 This converts the o65 binary and outputs as a binary file with comment length, comment, code length, code, reloc length and reloc table. This is the same output format as the extract command.
 
    ```
-   usage: a3Driverutil.py bin [-h] o65file binfile
+   usage: a3Driverutil.py bin o65file binfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
@@ -116,7 +116,7 @@ This converts the o65 binary and outputs as a binary file with comment length, c
 This converts the o65 binary and outputs as a SOS.DRIVER that contains just one driver. The program adds a full SOS.DRIVER file header structure, ie 'SOS DRVR' and dummy char set and keyboard map. This allows the file to be loaded as a secondary driver file with SCP. ie read in a full SOS.DRIVER file with SCP, and then read this one in as a secondary one to add to the other drivers. 
 
    ```
-   usage: a3Driverutil.py sos [-h] o65file sosfile
+   usage: a3Driverutil.py sos o65file sosfile
 
    positional arguments:
      o65file     Input o65 code file to be converted
@@ -124,39 +124,42 @@ This converts the o65 binary and outputs as a SOS.DRIVER that contains just one 
 ```
 
 ## List Drivers in a SOS.DRIVER file
-This will list the drivers contained in a SOS.DRIVER file.
+This will list the drivers contained in a SOS.DRIVER file. 
+Now prints the driver comment field.
 
    ```
-   usage: a3Driverutil.py list [-h] sosfile
+   usage: a3Driverutil.py list sosfile
 
    positional arguments:
      sosfile     SOS.DRIVER file to list drivers in
   
   Example:
    A3Driverutil.py list SOS.DRIVERtdm#0c0000
-   DriverName        Status     Slot   Unit   Manid  Release
-   .GRAFIX           active     N/A     00     0001   1300
-   .AUDIO            active     N/A     00     0001   1000
-   .FMTD1            active     N/A     00     0001   1300
-     .FMTD2          active     N/A     01     0001   1300
-     .FMTD3          inactive   N/A     02     0001   1300
-     .FMTD4          inactive   N/A     03     0001   1300
-   .RS232            active     N/A     00     0001   1300
-   .PARPRINTER       active       1     00     0001   1300
-   .SILENTYPE        active     N/A     00     0001   1040
-   .PROFILE          active       1     00     4453   1000
-     .CFFA3000D2     active       1     01     4453   1000
-     .CFFA3000D3     active       1     02     4453   1000
-     .CFFA3000D4     active       1     03     4453   1000
-     .CFFA3000D5     active       1     04     4453   1000
-     .CFFA3000D6     active       1     05     4453   1000
-     .CFFA3000D7     active       1     06     4453   1000
-     .CFFA3000D8     active       1     07     4453   1000
-   .CONSOLE          active       4     00     0001   1310
-     .MOUSE          active       4     01     5555   2310
-   .DESKTOPMANAGER   active     N/A     00     3333   1400
-   
-    Total size:  42496
+   DriverName        Status    Slot  Unit Manid Release Comment
+   .AUDIO            active    N/A   00   0001  1000    Audio Driver --  Copyright Apple Computer, Inc. 1980
+   .FMTD1            active    N/A   00   0001  1300    Disk /// Formatter Driver -- Copyright Apple Computer, Inc. 1980-83
+     .FMTD2          active    N/A   01   0001  1300      ^Sub device
+     .FMTD3          inactive  N/A   02   0001  1300      ^Sub device
+     .FMTD4          inactive  N/A   03   0001  1300      ^Sub device
+   .RS232            active    N/A   00   0001  1300    Built-in Serial Port RS-232 Driver -- Copyright Apple Computer, Inc. 1981-83
+   .PARPRINTER       active    1     00   0001  1300    Parallel Printer Driver -- Copyright (C) 1983 by Apple Computer Inc.
+   .SILENTYPE        active    N/A   00   0001  1040    Silentype driver - Copyright Apple Computer, Inc. 1980-83
+   .PROFILE          active    1     00   4453  1000    Apple /// CFFA3000 (Compact Flash For Apple 3000) Driver by David Schmidt 2011
+     .CFFA3000D2     active    1     01   4453  1000      ^Sub device
+     .CFFA3000D3     active    1     02   4453  1000      ^Sub device
+     .CFFA3000D4     active    1     03   4453  1000      ^Sub device
+     .CFFA3000D5     active    1     04   4453  1000      ^Sub device
+     .CFFA3000D6     active    1     05   4453  1000      ^Sub device
+     .CFFA3000D7     active    1     06   4453  1000      ^Sub device
+     .CFFA3000D8     active    1     07   4453  1000      ^Sub device
+   .CONSOLE          active    4     00   0001  1310    Console Driver -- Copyright Apple Computer, Inc. 1980-83
+     .MOUSE          active    4     01   5555  2310      ^Sub device
+   .DESKTOPMANAGER   active    N/A   00   3333  1400    The Desktop Manager -- (c) 1985-1986 ON THREE Inc. Written By ROB TURNER
+   .GRAFIX           active    N/A   00   0001  1301    Copyright (C) 1983 Apple Computer, Inc.  Graphics Driver.
+   .GRAFIX           active    N/A   00   0001  1301    Copyright (C) 1983 Apple Computer, Inc.  Graphics Driver.
+   .GRAFIX           active    N/A   00   0001  1301    Copyright (C) 1983 Apple Computer, Inc.  Graphics Driver  .
+
+   Total size:  53134
 ```
 The list also displays the total size of the SOS.DRIVER file. This program does not do any specific size checking currently, so you will need to keep an eye on this. I think I have read that SOS will work with up to around 60k, but i think the System Utils will not allow you to create one this big.  
 
@@ -164,7 +167,7 @@ The list also displays the total size of the SOS.DRIVER file. This program does 
 This adds the complete driver binary block of data to the SOS.DRIVER file. This file includes the comment length, comment, code length, code, relocation length and relocation data. The driver can be extracted from another SOS.DRIVER file with the 'extract' command.
 
    ```
-   usage: a3Driverutil.py addbin [-h] driverbinfile sosfile
+   usage: a3Driverutil.py addbin driverbinfile sosfile
 
    positional arguments:
      driverbinfile  Name of driver binary file to be added
@@ -176,7 +179,7 @@ This adds the complete driver binary block of data to the SOS.DRIVER file. This 
 This extracts the complete driver block of data from the SOS.DRIVER file and outputs as one binary file. This includes the comment length, comment, code length, code, relocation length and relocation data. This can be added to another SOS.DRIVER file with the 'addbin' command.
 
    ```
-   usage: a3Driverutil.py extract [-h] drivername sosfile
+   usage: a3Driverutil.py extract drivername sosfile
 
    positional arguments:
      drivername  Name of driver to be extracted (include . eg: ".console"
@@ -187,7 +190,7 @@ This extracts the complete driver block of data from the SOS.DRIVER file and out
 This extracts just the code for a specified driver from the SOS.DRIVER file, and then relocates it to $2000 base address. This is for use when disassembling a driver as there is no ambiguity with the zero page as there would be if the base address was $0000. You can then use your disassembler of choice to disassemble the code block.
 
    ```
-   usage: a3Driverutil.py extractcode [-h] drivername sosfile
+   usage: a3Driverutil.py extractcode drivername sosfile
 
    positional arguments:
      drivername  Name of driver to be extracted (include . eg: ".console"
@@ -198,7 +201,7 @@ This extracts just the code for a specified driver from the SOS.DRIVER file, and
 This allows a driver to be deleted from a SOS.DRIVER file.
 
    ```
-   usage: a3Driverutil.py delete [-h] drivername sosfile
+   usage: a3Driverutil.py delete drivername sosfile
 
    positional arguments:
      drivername  Name of driver to be deleted (include . eg: ".console"
@@ -209,7 +212,7 @@ This allows a driver to be deleted from a SOS.DRIVER file.
 This allows the slot to be set for a driver in a SOS.DRIVER file.
 
    ```
-   usage: a3Driverutil.py slot [-h] slotnumber drivername sosfile
+   usage: a3Driverutil.py slot slotnumber drivername sosfile
 
    positional arguments:
      slotnumber  New slot number
