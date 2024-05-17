@@ -182,7 +182,7 @@ This extracts the complete driver block of data from the SOS.DRIVER file and out
    usage: a3Driverutil.py extract drivername sosfile
 
    positional arguments:
-     drivername  Name of driver to be extracted (include . eg: ".console"
+     drivername  Name of driver to be extracted (include . eg: ".console")
      sosfile     SOS.DRIVER file to extract the driver from
 ```
 
@@ -193,18 +193,18 @@ This extracts just the code for a specified driver from the SOS.DRIVER file, and
    usage: a3Driverutil.py extractcode drivername sosfile
 
    positional arguments:
-     drivername  Name of driver to be extracted (include . eg: ".console"
+     drivername  Name of driver to be extracted (include . eg: ".console")
      sosfile     SOS.DRIVER file to extract the driver from
 ```
 
-## Delete driver code from the SOS.DRIVER file
+## Delete driver from the SOS.DRIVER file
 This allows a driver to be deleted from a SOS.DRIVER file.
 
    ```
    usage: a3Driverutil.py delete drivername sosfile
 
    positional arguments:
-     drivername  Name of driver to be deleted (include . eg: ".console"
+     drivername  Name of driver to be deleted (include . eg: ".console")
      sosfile     SOS.DRIVER file to delete the driver from
   ```
 
@@ -216,6 +216,6 @@ This allows the slot to be set for a driver in a SOS.DRIVER file.
 
    positional arguments:
      slotnumber  New slot number
-     drivername  Name of driver to be updated (include . eg: ".console"
+     drivername  Name of driver to be updated (include . eg: ".console")
      sosfile     SOS.DRIVER file to update the driver slot
   ```
