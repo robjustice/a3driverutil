@@ -311,7 +311,7 @@ def parsedriverfile(filecontents):
 # this function extracts the driver details from the dib
 # and returns them in a dictionary
 #
-def parseDIB(filedata,offset,dib):
+def parseDIB(filedata,offset,dib,commentoffset=None):
     driver_details={}
     driver_details['dib_num'] = dib
     driver_details['name_len'] = readByte(filedata,offset+6)
@@ -323,6 +323,9 @@ def parseDIB(filedata,offset,dib):
     driver_details['subtype'] = readByte(filedata,offset+26)
     driver_details['manid'] = readWord(filedata,offset+30)
     driver_details['release'] = readWord(filedata,offset+32)
+    if commentoffset != None:
+        driver_details['comment'] = filedata[commentoffset+2:offset].decode('ascii')
+    
     return driver_details      
 
 #
@@ -476,18 +479,19 @@ elif args.command == 'list':
     drivers_list = parsedriverfile(filedata)[0]  #we just want the first item in the returned list
 
     driver_details = []
-    
+        
     for i in range(0,len(drivers_list)):
         dib = 0
         offset = drivers_list[i]['code_start']
-        driver_details.append(parseDIB(filedata,offset,dib))
+        commentoffset = drivers_list[i]['comment_start']
+        driver_details.append(parseDIB(filedata,offset,dib,commentoffset))
         nextdib = readWord(filedata,offset+2) #next dib of this driver
         while nextdib != 0:
             dib += 1
             driver_details.append(parseDIB(filedata,offset+nextdib,dib))
             nextdib = readWord(filedata,offset+nextdib+2) #next dib of this driver
     
-    print('DriverName        Status     Slot   Unit   Manid  Release')     
+    print('DriverName        Status    Slot  Unit Manid Release Comment')     
     for i in range(0,len(driver_details)):
         #decode status byte
         if driver_details[i]['status'] & 0x80 == 0x80:
@@ -501,11 +505,9 @@ elif args.command == 'list':
             slot = driver_details[i]['slot']
         
         if driver_details[i]['dib_num'] == 0:  #don't indent the first DIB
-            #print('{:16}  {:10} {:3}     {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'], status, slot, driver_details[i]['unit'],driver_details[i]['manid'],driver_details[i]['release']))
-            print('{}  {} {}    {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'].ljust(16,' '), status.ljust(10,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'],driver_details[i]['release']))
+            print('{}  {} {}   {:02X}   {:04X}  {:04X}    {:64}'.format(driver_details[i]['name'].ljust(16,' '), status.ljust(9,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'], driver_details[i]['release'], driver_details[i]['comment']))
         else:         #otherwise indent the rest, ie sub devices
-            #print('  {:16}{:10} {:3}     {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'], status, slot, driver_details[i]['unit'],driver_details[i]['manid'],driver_details[i]['release']))
-            print('  {}{} {}    {:02X}     {:04X}   {:04X}'.format(driver_details[i]['name'].ljust(16,' '), status.ljust(10,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'],driver_details[i]['release']))
+            print('  {}{} {}   {:02X}   {:04X}  {:04X}      ^Sub device'.format(driver_details[i]['name'].ljust(16,' '), status.ljust(9,' '), str(slot).ljust(3,' '), driver_details[i]['unit'], driver_details[i]['manid'], driver_details[i]['release']))
 
     print('\n Total size: ',len(filedata))
 
